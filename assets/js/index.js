@@ -1,3 +1,5 @@
+// const axios = require('axios');
+
 $(document).ready(() => {
     let parametersString = window.location.search.slice(1);
     let parametersArray = parametersString.split("&");
@@ -32,6 +34,21 @@ $(document).ready(() => {
         sortedField = $(e.delegateTarget).data('field');
         sortDirection = $(e.delegateTarget).hasClass('mod_desc') ? 'desc' : 'asc';
         window.location.search = changeSortUrl(sortedField, sortDirection);
+    });
+
+    $('.creation_form').submit((e) => {
+        let headers = ['user', 'email', 'content'];
+        let axiosParams = {};
+
+        // e.preventDefault();
+
+        for (let oneHeader of headers) {
+            axiosParams[oneHeader] = $(`.creation_form [name=${oneHeader}]`).val();
+        }
+        axios.post('/save', axiosParams).then((response) => {
+            console.log(response.data);
+
+        });
     });
 
 

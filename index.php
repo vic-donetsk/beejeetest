@@ -20,7 +20,7 @@ if (!isset($_GET['path']) && !count($_POST)) {
 
  else if ($_GET['path'] === 'add') {
     // task's adding page
-    var_dump('adding page');
+    $controller->actionCreate();
 }
 
 else if ($_GET['path'] === 'auth') {
@@ -34,13 +34,13 @@ else if ($_POST['path'] === 'done') {
 }
 
 else if ($_POST['path'] === 'edited') {
-    // mark the task as completed
+    // mark the task as edited by admin
     var_dump($_POST);
 }
 
-else if ($_POST['path'] === 'save') {
-    // mark the task as completed
-    var_dump($_POST);
+else if ($_REQUEST['path'] === 'save') {
+    // validate and append new task
+    echo json_encode($_POST);
 }
 
 else
@@ -50,12 +50,4 @@ else
 // URL and method not found
 var_dump('404');
 
-//
-//else if (count($_GET)) {
-//    // pagination page
-////    $controller->actionFiltration($_GET, $config['pagination']['items']);
-//} else if (count()) {
 
-//}
-
-//require __DIR__ . '/views/index.view.php';

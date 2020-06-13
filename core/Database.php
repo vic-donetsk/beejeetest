@@ -6,8 +6,6 @@ class Database
     private $connection = null;
     private $config;
 
-
-
     public function __construct(array $config)
     {
         $this->config = $config;
@@ -43,7 +41,7 @@ class Database
                                   id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                                   user VARCHAR(50),
                                   email VARCHAR(50),
-                                  content VARCHAR(500),
+                                  content VARCHAR(250),
                                   is_done BOOLEAN,
                                   is_edited BOOLEAN
                                   );
@@ -64,13 +62,12 @@ class Database
         $sqlQuery .= "LIMIT " . $tasksPerPage;
         if ($pageNumber) $sqlQuery .= " OFFSET " . ($pageNumber - 1) * $tasksPerPage;
 
-        $currentData = $this->connection->query($sqlQuery)->fetchAll();
-
-        return $currentData;
+        return $this->connection->query($sqlQuery)->fetchAll();
 
     }
 
-    public function getCountPages() {
+    public function getCountPages()
+    {
         $sqlQuery = "SELECT COUNT(*) FROM `tasks` ";
         return ceil($this->connection->query($sqlQuery)->fetchColumn()/$this->config['pagination']['items']);
     }

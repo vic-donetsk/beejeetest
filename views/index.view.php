@@ -2,56 +2,71 @@
 
 <main class="index">
 
+    <div class="index_controls">
+        <a href="/add" class="index_controls-item" title="Создать новую задачу">
+            <svg>
+                <use xlink:href="#svgAdd"></use>
+            </svg>
+        </a>
+        <a href="/auth" class="index_controls-item" title="Войти в систему">
+            <svg>
+                <use xlink:href="#svgLogin"></use>
+            </svg>
+        </a>
+    </div>
+
     <div class="index_content">
 
-    <div class="index_row mod_title">
-        <?php foreach ($model->fieldsList as $field => $header) { ?>
-            <div class="index_row-item mod_<?= $field ?>"><?= $header ?></div>
-        <?php } ?>
-    </div>
-    <?php
-    if (count($currentPageTasks)) {
-        foreach ($currentPageTasks as $task) { ?>
-            <div class="index_row mod_tasks">
-                <?php foreach ($model->fieldsList as $field => $header) { ?>
-                    <div class="index_row-item mod_<?= $field ?>">
-                        <?php if ($field !== 'is_done') {
-                            echo $task[$field];
-                        } else { ?>
-                            <?php if ($task['is_done']) { ?>
-                                <button class="status mod_done" disabled>
-                                    Выполнено
-                                </button>
-                            <?php } else { ?>
-                                <button class="status mod_expected">
-                                    Ожидает выполнения
-                                </button>
-                            <?php } ?>
-                            <?php if ($task['is_edited']) { ?>
-                                <button class="status mod_edited" disabled>
-                                    Отредактировано админом
-                                </button>
-                            <?php } ?>
-                        <?php } ?>
-                        <?php if ($field !== 'content') { ?>
-                            <div class="sortable mod_desc mod_<?= $field ?>" data-field="<?= $field ?>">
-                                <svg class="sortable_item">
-                                    <use xlink:href="#sortUp"></use>
-                                </svg>
-                            </div>
-                            <div class="sortable mod_asc mod_<?= $field ?>" data-field="<?= $field ?>">
-                                <svg class="sortable_item">
-                                    <use xlink:href="#sortDown"></use>
-                                </svg>
-                            </div>
-                        <?php } ?>
+        <div class="index_row mod_title">
+            <?php foreach ($model->fieldsList as $field => $header) { ?>
+                <div class="index_row-item mod_<?= $field ?>"><?= $header ?>
+                <?php if ($field !== 'content') { ?>
+                    <div class="sortable mod_desc mod_<?= $field ?>" data-field="<?= $field ?>">
+                        <svg class="sortable_item">
+                            <use xlink:href="#sortUp"></use>
+                        </svg>
+                    </div>
+                    <div class="sortable mod_asc mod_<?= $field ?>" data-field="<?= $field ?>">
+                        <svg class="sortable_item">
+                            <use xlink:href="#sortDown"></use>
+                        </svg>
                     </div>
                 <?php } ?>
-            </div>
-        <?php }
-    } else { ?>
-        <div class="index_empty"> Список заданий пуст </div>
-    <?php } ?>
+                </div>
+            <?php } ?>
+        </div>
+        <?php
+        if (count($currentPageTasks)) {
+            foreach ($currentPageTasks as $task) { ?>
+                <div class="index_row mod_tasks">
+                    <?php foreach ($model->fieldsList as $field => $header) { ?>
+                        <div class="index_row-item mod_<?= $field ?>">
+                            <?php if ($field !== 'is_done') {
+                                echo $task[$field];
+                            } else { ?>
+                                <?php if ($task['is_done']) { ?>
+                                    <button class="status mod_done" disabled>
+                                        Выполнено
+                                    </button>
+                                <?php } else { ?>
+                                    <button class="status mod_expected">
+                                        Ожидает выполнения
+                                    </button>
+                                <?php } ?>
+                                <?php if ($task['is_edited']) { ?>
+                                    <button class="status mod_edited" disabled>
+                                        Отредактировано админом
+                                    </button>
+                                <?php } ?>
+                            <?php } ?>
+
+                        </div>
+                    <?php } ?>
+                </div>
+            <?php }
+        } else { ?>
+            <div class="index_empty"> Список заданий пуст </div>
+        <?php } ?>
     </div>
 
     <?php if ($currentPagination) { ?>

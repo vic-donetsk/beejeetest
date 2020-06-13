@@ -25,4 +25,9 @@ class Controller
         require __DIR__ . '/../views/index.view.php';
     }
 
+    public function actionCreate()
+    {
+        require __DIR__ . '/../views/add.view.php';
+    }
+
 }

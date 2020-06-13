@@ -18,6 +18,6 @@ return [
         'password' => ''
     ],
     'pagination'       => [
-        'items' => 1
+        'items' => 3
     ]
 ];
