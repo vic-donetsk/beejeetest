@@ -1,4 +1,18 @@
 $(document).ready(() => {
+    let parametersString = window.location.search.slice(1);
+    let parametersArray = parametersString.split("&");
+    let sortedField = '', sortDirection = '';
+
+    for (let oneParameter of parametersArray) {
+        let explodedParameter = oneParameter.split('=');
+        if (explodedParameter[0] === 'orderBy') sortedField = explodedParameter[1];
+        else if (explodedParameter[0] === 'direction') sortDirection = explodedParameter[1];
+    }
+    if (sortedField && sortDirection) {
+        $('.sortable.mod_'+sortedField+'.mod_'+sortDirection).find('.sortable_item').addClass('mod_sorted');
+    }
+
+
     $('.index_pagination-item.mod_selectable').click((e) => {
 
         let currentPage = +$('.index_pagination-item.mod_active').text().trim();
@@ -11,50 +25,40 @@ $(document).ready(() => {
         } else {
             newPage = +clickedPage;
         }
+        window.location.search = changePageUrl(currentPage, newPage);
+    });
 
-
-        console.log('Вызвана страница: ' + $(e.target).text().trim());
-        console.log('Текущая страница: ' + $('.index_pagination-item.mod_active').text().trim());
-
-
-        window.location.search = changeUrlParameters(currentPage, newPage);
-        // console.log(changeUrlParameters(currentPage, newPage));
+    $('.sortable').click((e) => {
+        sortedField = $(e.delegateTarget).data('field');
+        sortDirection = $(e.delegateTarget).hasClass('mod_desc') ? 'desc' : 'asc';
+        window.location.search = changeSortUrl(sortedField, sortDirection);
     });
 
 
+    changePageUrl = (currentPage, newPage) => {
+        let outputParameters = '';
+
+        if (parametersString.indexOf('page') !== -1) {
+            outputParameters = parametersString.replace('page=' + currentPage, 'page=' + newPage);
+        } else if (parametersString) {
+            outputParameters = "?page=" + newPage + '&' + parametersString;
+        } else {
+            outputParameters = "?page=" + newPage;
+        }
+        return outputParameters;
+    };
+
+    changeSortUrl = (sortBy, sortDirection) => {
+        let outputParameters = '?';
+        for (let oneParameter of parametersArray) {
+            if (oneParameter.indexOf('page') !== -1) {
+                outputParameters += oneParameter + '&';
+                break;
+            }
+        }
+        outputParameters += 'orderBy=' + sortBy + '&direction=' + sortDirection;
+
+        return outputParameters;
+    };
+
 });
-
-changeUrlParameters = (currentPage, newPage) => {
-    let parametersString = window.location.search;
-    let outputParameters = '';
-    console.log(parametersString);
-
-    if (parametersString.indexOf('page') !== -1) {
-        outputParameters = parametersString.replace('page=' + currentPage, 'page=' + newPage);
-    } else if (parametersString) {
-        outputParameters = "?page=" + newPage + '&' + parametersString;
-    } else {
-        outputParameters = "?page=" + newPage;
-    }
-
-    console.log(outputParameters);
-
-    return outputParameters;
-
-    //
-    // let parametersArray = parametersString.split('&');
-    // console.log(parametersArray);
-    // let pageExist = false;
-    // parametersArray.forEach((parametersItem) => {
-    //     let oneParameter = parametersItem.split('=');
-    //     console.log(oneParameter);
-    //     if (oneParameter[0] === 'page') {
-    //         oneParameter[1] = 123;
-    //         parametersItem = oneParameter.join('=');
-    //         pageExist = true;
-    //     }
-    // });
-    // console.log(parametersArray);
-    // if (!pageExist)
-    //
-};

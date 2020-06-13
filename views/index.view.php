@@ -15,24 +15,36 @@
             <div class="index_row mod_tasks">
                 <?php foreach ($model->fieldsList as $field => $header) { ?>
                     <div class="index_row-item mod_<?= $field ?>">
-                    <?php if ($field !== 'is_done') {
-                        echo $task[$field];
-                    } else { ?>
-                        <?php if ($task['is_done']) { ?>
-                            <button class="status mod_done" disabled>
-                                Выполнено
-                            </button>
-                        <?php } else { ?>
-                            <button class="status mod_expected">
-                                Ожидает выполнения
-                            </button>
+                        <?php if ($field !== 'is_done') {
+                            echo $task[$field];
+                        } else { ?>
+                            <?php if ($task['is_done']) { ?>
+                                <button class="status mod_done" disabled>
+                                    Выполнено
+                                </button>
+                            <?php } else { ?>
+                                <button class="status mod_expected">
+                                    Ожидает выполнения
+                                </button>
+                            <?php } ?>
+                            <?php if ($task['is_edited']) { ?>
+                                <button class="status mod_edited" disabled>
+                                    Отредактировано админом
+                                </button>
+                            <?php } ?>
                         <?php } ?>
-                        <?php if ($task['is_edited']) { ?>
-                            <button class="status mod_edited" disabled>
-                                Отредактировано админом
-                            </button>
+                        <?php if ($field !== 'content') { ?>
+                            <div class="sortable mod_desc mod_<?= $field ?>" data-field="<?= $field ?>">
+                                <svg class="sortable_item">
+                                    <use xlink:href="#sortUp"></use>
+                                </svg>
+                            </div>
+                            <div class="sortable mod_asc mod_<?= $field ?>" data-field="<?= $field ?>">
+                                <svg class="sortable_item">
+                                    <use xlink:href="#sortDown"></use>
+                                </svg>
+                            </div>
                         <?php } ?>
-                    <?php } ?>
                     </div>
                 <?php } ?>
             </div>

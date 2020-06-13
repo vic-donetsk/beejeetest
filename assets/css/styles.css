@@ -33,6 +33,8 @@ body, body * {
 
 
 .index_row-item {
+    position: relative;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,6 +82,31 @@ body, body * {
 .status.mod_edited {
     color: red;
 }
+
+.sortable {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.sortable.mod_desc {
+    top: 10px;
+    right: 10px;
+}
+.sortable.mod_asc {
+    bottom: 10px;
+    right: 10px;
+}
+.sortable .sortable_item {
+    width: 100%;
+    height: 100%;
+}
+.sortable .sortable_item.mod_sorted {
+    fill: blue;
+}
+
+
 
 .index_pagination {
     display: flex;
