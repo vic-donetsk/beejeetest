@@ -3,7 +3,7 @@
 class Task {
 
     public $fieldsList;
-
+    public $validationLengthRules;
     public $db;
 
     public function __construct()
@@ -15,11 +15,16 @@ class Task {
             'is_done' => 'Статус'
         ];
 
+        $this->validationLengthRules = [
+            'user' => 50,
+            'email' => 50,
+            'content' => 250,
+        ];
+
         $this->db = $GLOBALS['db'];
     }
 
     public function getCurrentPage($currentPage) {
-
 
         $currentOrderField = $_GET['orderBy'] ?? null;
         $currentOrderDirection = $_GET['direction'] ?? null;
@@ -63,6 +68,31 @@ class Task {
             default:
                 return ['Prev', 1, '..', $currentPage, '..', $totalPages, 'Next'];
         }
+    }
+
+    public function validation($inputData) {
+        $errors = [];
+        // check email format
+        if (!filter_var($inputData['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'Неверный формат электронной почты';
+        };
+        foreach ($this->validationLengthRules as $field => $max) {
+            // check for empty
+            if (!$inputData[$field]) {
+                $errors[$field] = 'Это поле должно быть заполнено!';
+            }
+            // check for max length
+            if (strlen($inputData[$field]) > $max) {
+                $errors[$field] = 'Длина поля - не более '. $max . ' символов';
+            }
+            filter_var('bob@example.com', FILTER_VALIDATE_EMAIL);
+        }
+
+        if (!$errors) {
+            $this->db->saveTask($inputData, $this->validationLengthRules);
+        }
+
+        return $errors;
     }
 
 

@@ -194,3 +194,10 @@ body, body * {
     padding: 5px 10px;
 }
 
+.is-invalid {
+    border-color: red;
+}
+.is-error {
+    color: red;
+}
+

@@ -18,7 +18,7 @@
     <div class="index_content">
 
         <div class="index_row mod_title">
-            <?php foreach ($model->fieldsList as $field => $header) { ?>
+            <?php foreach ($taskModel->fieldsList as $field => $header) { ?>
                 <div class="index_row-item mod_<?= $field ?>"><?= $header ?>
                 <?php if ($field !== 'content') { ?>
                     <div class="sortable mod_desc mod_<?= $field ?>" data-field="<?= $field ?>">
@@ -39,7 +39,7 @@
         if (count($currentPageTasks)) {
             foreach ($currentPageTasks as $task) { ?>
                 <div class="index_row mod_tasks">
-                    <?php foreach ($model->fieldsList as $field => $header) { ?>
+                    <?php foreach ($taskModel->fieldsList as $field => $header) { ?>
                         <div class="index_row-item mod_<?= $field ?>">
                             <?php if ($field !== 'is_done') {
                                 echo $task[$field];

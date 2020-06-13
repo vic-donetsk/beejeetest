@@ -3,18 +3,18 @@
 <main class="creation">
     <form class="creation_form" action="/save" method="post">
 
-        <div class="creation_form-item">
+        <div id="creation_user" class="creation_form-item">
             <input type="text" name="user">
-            <div class="is-error"></div>
         </div>
-        <div class="creation_form-item">
-            <input type="text" name="email" class="creation_form-input">
-            <div class="is-error"></div>
+        <div class="is-error"></div>
+        <div id="creation_email" class="creation_form-item">
+            <input type="text" name="email">
         </div>
-        <div class="creation_form-item">
+        <div class="is-error"></div>
+        <div id="creation_content" class="creation_form-item">
             <textarea name="content"></textarea>
-            <div class="is-error"></div>
         </div>
+        <div class="is-error"></div>
 
         <button type="submit" class="creation_form-submit">Сохранить</button>
 

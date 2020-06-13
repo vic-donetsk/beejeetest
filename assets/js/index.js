@@ -37,18 +37,28 @@ $(document).ready(() => {
     });
 
     $('.creation_form').submit((e) => {
+        e.preventDefault();
         let headers = ['user', 'email', 'content'];
-        let axiosParams = {};
-
-        // e.preventDefault();
+        let axiosParams = new FormData();
 
         for (let oneHeader of headers) {
-            axiosParams[oneHeader] = $(`.creation_form [name=${oneHeader}]`).val();
+            axiosParams.set(oneHeader, $(`.creation_form [name=${oneHeader}]`).val());
         }
-        axios.post('/save', axiosParams).then((response) => {
-            console.log(response.data);
 
-        });
+        axios({
+            method: 'post',
+            url: '/save',
+            data: axiosParams,
+            headers: {'Content-Type': 'multipart/form-data' }
+        })
+            .then((response) => {
+                //handle success
+                if (response.data === 'ok') {
+                    successCreation();
+                } else {
+                    showErrors(response.data);
+                }
+            })
     });
 
 
@@ -76,6 +86,23 @@ $(document).ready(() => {
         outputParameters += 'orderBy=' + sortBy + '&direction=' + sortDirection;
 
         return outputParameters;
+    };
+
+    showErrors = (errors) => {
+        console.log('errors');
+        console.log(errors);
+        for(let field in errors) {
+            let errorField = $('#creation_' + field);
+            errorField.addClass('is-invalid').next().text(errors[field]);
+            errorField.find(`[name = ${field}]`).focus( () => {
+                errorField.removeClass('is-invalid').next().text('');
+            });
+
+        }
+    };
+
+    successCreation = () => {
+
     };
 
 });

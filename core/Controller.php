@@ -15,12 +15,12 @@ class Controller
 
     public function actionIndex()
     {
-        $model = new Task();
+        $taskModel = new Task();
 
         $currentPageNumber = $_GET['page'] ?? 1;
 
-        $currentPageTasks = $model->getCurrentPage($currentPageNumber);
-        $currentPagination = $model->setPagination($currentPageNumber);
+        $currentPageTasks = $taskModel->getCurrentPage($currentPageNumber);
+        $currentPagination = $taskModel->setPagination($currentPageNumber);
 
         require __DIR__ . '/../views/index.view.php';
     }
@@ -28,6 +28,20 @@ class Controller
     public function actionCreate()
     {
         require __DIR__ . '/../views/add.view.php';
+    }
+
+    public function actionSave()
+    {
+        $taskModel = new Task();
+        $errors = $taskModel->validation($_POST);
+
+        if ($errors) {
+            // return validation errors
+            echo json_encode($errors);
+        } else {
+            echo 'ok';
+        }
+        return;
     }
 
 }

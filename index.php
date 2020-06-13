@@ -40,7 +40,7 @@ else if ($_POST['path'] === 'edited') {
 
 else if ($_REQUEST['path'] === 'save') {
     // validate and append new task
-    echo json_encode($_POST);
+    $controller->actionSave();
 }
 
 else

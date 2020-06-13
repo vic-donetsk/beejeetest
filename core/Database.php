@@ -72,6 +72,21 @@ class Database
         return ceil($this->connection->query($sqlQuery)->fetchColumn()/$this->config['pagination']['items']);
     }
 
+    public function saveTask($savingData, $fillable) {
+        $fields = '(';
+        $values = '(';
+        foreach ($fillable as $field => $other) {
+            $fields .= $field . ',';
+            $values .= $savingData[$field] . ',';
+        }
+        $fields .= 'is_done,is_edited)';
+        $values .= '0, 0)';
+
+        $query = 'INSERT INTO `tasks` ' + $fields + ' VALUES ' + $values;
+
+        $this->connection->exec($query);
+    }
+
 
 
 }
