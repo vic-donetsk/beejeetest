@@ -102,7 +102,7 @@ $(document).ready(() => {
     };
 
     successCreation = () => {
-
+        $('.creation_success-wrapper').css('display', 'block');
     };
 
 });

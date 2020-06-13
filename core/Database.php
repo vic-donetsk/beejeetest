@@ -77,13 +77,17 @@ class Database
         $values = '(';
         foreach ($fillable as $field => $other) {
             $fields .= $field . ',';
-            $values .= $savingData[$field] . ',';
+            $values .= "'".$savingData[$field] . "',";
         }
         $fields .= 'is_done,is_edited)';
         $values .= '0, 0)';
 
-        $query = 'INSERT INTO `tasks` ' + $fields + ' VALUES ' + $values;
+        $query = "INSERT INTO `tasks` " . $fields . " VALUES " . $values;
 
+//        var_dump($query);
+//        var_dump($values);
+//        die();
+//
         $this->connection->exec($query);
     }
 

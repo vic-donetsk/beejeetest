@@ -19,6 +19,16 @@
         <button type="submit" class="creation_form-submit">Сохранить</button>
 
     </form>
+
+    <div class="creation_success-wrapper">
+        <div class="creation_success">
+            <div class="creation_success-info">
+                Новая задача успешно добавлена!
+            </div>
+            <a href="/" class="creation_success-link">Вернуться к списку задач</a>
+        </div>
+    </div>
+
 </main>
 
 <?php include __DIR__ . '/components/footer.view.php' ?>
