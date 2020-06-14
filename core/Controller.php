@@ -39,14 +39,20 @@ class Controller
 
     public function actionEdit()
     {
+        $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
+
         $editedTask = $this->db->getOneTask($_GET['id']);
 
         require __DIR__ . '/../views/add.view.php';
-
     }
 
     public function actionSave()
     {
+        if (isset($_POST['id']) and $_POST['token'] !== $_SESSION['token']) {
+            echo json_encode(['declined' => true]);
+            return;
+        }
+
         $taskModel = new Task();
         $errors = $taskModel->validation($_POST);
 

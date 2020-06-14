@@ -39,9 +39,14 @@ $(document).ready(() => {
         let headers = ['user', 'email', 'content'];
         let axiosParams = new FormData();
 
+        // set fillable fields to save
         for (let oneHeader of headers) {
             axiosParams.set(oneHeader, $(`.creation_form [name=${oneHeader}]`).val());
         }
+        // set id (when editing, not creating)
+        if ($(e.target).data('id')) axiosParams.set('id', $(e.target).data('id'));
+        axiosParams.set('token', $('main').data('access'));
+
         axios({
             method: 'post',
             url: '/save',
@@ -50,6 +55,9 @@ $(document).ready(() => {
         })
             .then((response) => {
                 //handle success
+                if (response.data.declined) {
+                    window.location.href = '/auth';
+                }
                 if (response.data.location) {
                     console.log(response.data.location);
                     successCreation(response.data.location);

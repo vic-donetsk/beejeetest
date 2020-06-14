@@ -86,8 +86,14 @@ class Task {
                 $errors[$field] = 'Длина поля - не более '. $max . ' символов';
             }
         }
+
+        // updating or saving task
         if (!$errors) {
-            $this->db->saveTask($inputData, $this->validationLengthRules);
+            if (isset($inputData['id'])) {
+                $this->db->updateTask($inputData, $this->validationLengthRules);
+            } else {
+                $this->db->saveTask($inputData, $this->validationLengthRules);
+            }
         }
         return $errors;
     }

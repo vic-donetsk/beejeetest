@@ -87,6 +87,31 @@ class Database
         $this->connection->exec($query);
     }
 
+    public function updateTask($savingData, $fillable)
+    {
+        $fields = '';
+        $values = [];
+        foreach ($fillable as $field => $other) {
+            $fields .= $field . '=?, ';
+            $values[] = htmlspecialchars($savingData[$field]);
+        }
+
+        // update mark only if task CONTENT was changed!! (test's condition)
+        $updatedTask = $this->getOneTask($savingData['id']);
+        if ($updatedTask['content'] !== $savingData['content']) {
+            $fields .= 'is_edited=? ';
+            $values[] = 1;
+        } else {
+            $fields = substr($fields,0,-2);
+        }
+        $values[] = $savingData['id'];
+        $updateQuery = "UPDATE `tasks` SET " . $fields . " WHERE id=?";
+
+
+        $this->connection->prepare($updateQuery)->execute($values);
+
+    }
+
     public function getAdmin()
     {
         $getAdminQuery = "SELECT * FROM `users` LIMIT 1";
@@ -94,14 +119,16 @@ class Database
         return $this->connection->query($getAdminQuery)->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function markDone($id) {
+    public function markDone($id)
+    {
 
         $updateOneTaskQuery = "UPDATE `tasks` SET `is_done`=1 WHERE `id`=?";
 
         $this->connection->prepare($updateOneTaskQuery)->execute([$id]);
     }
 
-    public function getOneTask($id) {
+    public function getOneTask($id)
+    {
 
         $getTaskQuery = "SELECT * FROM `tasks` WHERE `id`=" . $id;
 
