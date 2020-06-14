@@ -29,9 +29,9 @@
         <div class="creation_success">
             <div class="creation_success-info">
                 <?php if (isset($editedTask)) { ?>
-                Новая задача успешно добавлена!
+                    Изменения успешно сохранены
                 <?php  } else { ?>
-                Изменения успешно сохранены
+                    Новая задача успешно добавлена!
                 <?php } ?>
             </div>
             <a href="" class="creation_success-link">Вернуться к списку задач</a>

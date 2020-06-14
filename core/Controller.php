@@ -69,8 +69,11 @@ class Controller
 
     public function actionAuthenticate()
     {
-        $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
-
+        // save path to return only for
+        // index page with get-parameters
+        if (parseRouteFromUrl($_SERVER['HTTP_REFERER']) !== 'edit') {
+            $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
+        }
         require __DIR__ . '/../views/auth.view.php';
     }
 

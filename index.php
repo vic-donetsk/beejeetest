@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__ . '/core/Database.php';
 include_once __DIR__ . '/core/Controller.php';
+include_once __DIR__ . '/core/helpers.php';
 include_once __DIR__ . '/models/Task.php';
 include_once __DIR__ . '/models/User.php';
 
