@@ -3,6 +3,7 @@
 class Controller
 {
     private $db;
+    public $adminToken;
 
     function __construct()
     {
@@ -11,6 +12,10 @@ class Controller
         $this->db = isset($GLOBALS['db'])
             ? $GLOBALS['db']
             : new DB($config);
+
+        session_save_path(__DIR__ . '/../sessions/');
+        session_start();
+        $this->adminToken = $_SESSION['token'] ?? null;
     }
 
     public function actionIndex()
@@ -27,7 +32,17 @@ class Controller
 
     public function actionCreate()
     {
+        $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
+
         require __DIR__ . '/../views/add.view.php';
+    }
+
+    public function actionEdit()
+    {
+        $editedTask = $this->db->getOneTask($_GET['id']);
+
+        require __DIR__ . '/../views/add.view.php';
+
     }
 
     public function actionSave()
@@ -39,9 +54,60 @@ class Controller
             // return validation errors
             echo json_encode($errors);
         } else {
-            echo 'ok';
+            $link = $_SESSION['previousPage'] ?? '/';
+            unset($_SESSION['previousPage']);
+            echo json_encode(['location' => $link]);
         }
         return;
     }
+
+    public function actionAuthenticate()
+    {
+        $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
+
+        require __DIR__ . '/../views/auth.view.php';
+    }
+
+    public function actionLogin()
+    {
+        $newUser = new User();
+
+        $errors = $newUser->validation($_POST);
+
+        if ($errors) {
+            // return validation errors
+            echo json_encode($errors);
+        } else {
+            // authentication successful
+
+            // generate token for admin
+            $token = random_bytes(15);
+            $_SESSION['token'] = bin2hex($token);
+
+            // return to page prior to authorization
+            $link = $_SESSION['previousPage'] ?? '/';
+            unset($_SESSION['previousPage']);
+            echo json_encode(['location' => $link]);
+        }
+        return;
+    }
+
+    public function actionLogout()
+    {
+        unset($_SESSION['token']);
+    }
+
+    public function actionDone()
+    {
+        if ($_POST['token'] === $_SESSION['token']) {
+            $doneTask = new Task();
+            $doneTask->placeMarkDone($_POST['id']);
+            echo json_encode(['accepted' => true]);
+        } else {
+            echo json_encode(['accepted' => false]);
+        }
+    }
+
+
 
 }

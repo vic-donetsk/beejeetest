@@ -62,8 +62,7 @@ class Database
         $sqlQuery .= "LIMIT " . $tasksPerPage;
         if ($pageNumber) $sqlQuery .= " OFFSET " . ($pageNumber - 1) * $tasksPerPage;
 
-        return $this->connection->query($sqlQuery)->fetchAll();
-
+        return $this->connection->query($sqlQuery)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getCountPages()
@@ -72,25 +71,42 @@ class Database
         return ceil($this->connection->query($sqlQuery)->fetchColumn()/$this->config['pagination']['items']);
     }
 
-    public function saveTask($savingData, $fillable) {
+    public function saveTask($savingData, $fillable)
+    {
         $fields = '(';
         $values = '(';
         foreach ($fillable as $field => $other) {
             $fields .= $field . ',';
-            $values .= "'".$savingData[$field] . "',";
+            $values .= "'" . htmlspecialchars($savingData[$field]) . "',";
         }
         $fields .= 'is_done,is_edited)';
         $values .= '0, 0)';
 
         $query = "INSERT INTO `tasks` " . $fields . " VALUES " . $values;
 
-//        var_dump($query);
-//        var_dump($values);
-//        die();
-//
         $this->connection->exec($query);
     }
 
+    public function getAdmin()
+    {
+        $getAdminQuery = "SELECT * FROM `users` LIMIT 1";
 
+        return $this->connection->query($getAdminQuery)->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function markDone($id) {
+
+        $updateOneTaskQuery = "UPDATE `tasks` SET `is_done`=1 WHERE `id`=?";
+
+        $this->connection->prepare($updateOneTaskQuery)->execute([$id]);
+    }
+
+    public function getOneTask($id) {
+
+        $getTaskQuery = "SELECT * FROM `tasks` WHERE `id`=" . $id;
+
+        return $this->connection->query($getTaskQuery)->fetch(PDO::FETCH_ASSOC);
+
+    }
 
 }

@@ -85,14 +85,15 @@ class Task {
             if (strlen($inputData[$field]) > $max) {
                 $errors[$field] = 'Длина поля - не более '. $max . ' символов';
             }
-            filter_var('bob@example.com', FILTER_VALIDATE_EMAIL);
         }
-
         if (!$errors) {
             $this->db->saveTask($inputData, $this->validationLengthRules);
         }
-
         return $errors;
+    }
+
+    public function placeMarkDone($id) {
+        $this->db->markDone($id);
     }
 
 

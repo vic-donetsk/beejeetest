@@ -1,5 +1,3 @@
-// const axios = require('axios');
-
 $(document).ready(() => {
     let parametersString = window.location.search.slice(1);
     let parametersArray = parametersString.split("&");
@@ -44,7 +42,6 @@ $(document).ready(() => {
         for (let oneHeader of headers) {
             axiosParams.set(oneHeader, $(`.creation_form [name=${oneHeader}]`).val());
         }
-
         axios({
             method: 'post',
             url: '/save',
@@ -53,12 +50,70 @@ $(document).ready(() => {
         })
             .then((response) => {
                 //handle success
-                if (response.data === 'ok') {
-                    successCreation();
+                if (response.data.location) {
+                    console.log(response.data.location);
+                    successCreation(response.data.location);
                 } else {
-                    showErrors(response.data);
+                    showErrors('creation', response.data);
                 }
-            })
+            });
+    });
+
+    $('.auth_form').submit((e) => {
+        e.preventDefault();
+        let headers = ['login', 'password'];
+        let axiosParams = new FormData();
+
+        for (let oneHeader of headers) {
+            axiosParams.set(oneHeader, $(`.auth_form [name=${oneHeader}]`).val());
+        }
+        axios({
+            method: 'post',
+            url: '/login',
+            data: axiosParams,
+            headers: {'Content-Type': 'multipart/form-data' }
+        })
+            .then((response) => {
+                //handle success
+                if (response.data.location) {
+                    window.location.href = response.data.location;
+                } else {
+                    showErrors('auth', response.data);
+                }
+            });
+    });
+
+    $('#index_controls-logout').click(()=> {
+        axios({
+            method: 'post',
+            url: '/logout',
+        })
+            .then((response) => {
+                window.location.reload();
+            });
+    });
+
+    $('.status_admin').change((e) => {
+        let axiosParams = new FormData();
+        axiosParams.set('id', $(e.target).val());
+        axiosParams.set('token', $('main').data('access'));
+        axios({
+            method: 'post',
+            url: '/done',
+            data: axiosParams,
+            headers: {'Content-Type': 'multipart/form-data' }
+        })
+            .then((response) => {
+               if (response.data.accepted) {
+                   $(e.target).prop({"disabled": true, "checked": true});
+               } else {
+                   window.location.href = '/auth';
+               }
+            });
+    });
+
+    $('.mod_edit-admin').click((e) => {
+        window.location.href = '/edit?id=' + $(e.target).data('id');
     });
 
 
@@ -88,11 +143,11 @@ $(document).ready(() => {
         return outputParameters;
     };
 
-    showErrors = (errors) => {
+    showErrors = (formName, errors) => {
         console.log('errors');
         console.log(errors);
         for(let field in errors) {
-            let errorField = $('#creation_' + field);
+            let errorField = $('#' + formName + '_' + field);
             errorField.addClass('is-invalid').next().text(errors[field]);
             errorField.find(`[name = ${field}]`).focus( () => {
                 errorField.removeClass('is-invalid').next().text('');
@@ -101,8 +156,9 @@ $(document).ready(() => {
         }
     };
 
-    successCreation = () => {
+    successCreation = (previousPage) => {
         $('.creation_success-wrapper').css('display', 'block');
+        $('.creation_success-link').attr('href', previousPage);
     };
 
 });

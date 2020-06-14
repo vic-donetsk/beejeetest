@@ -5,7 +5,7 @@ body, body * {
     font-family: Roboto, sans-serif;
 }
 
-.index, .creation {
+.index, .creation, .auth {
     position: relative;
     min-height: 100vh;
     padding: 20px 50px;
@@ -15,6 +15,7 @@ body, body * {
 .index_controls {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
 }
 
@@ -22,6 +23,7 @@ body, body * {
     height: 50px;
     width: 50px;
     margin: 0 100px;
+    cursor: pointer;
 }
 
 .index_controls-item svg {
@@ -84,6 +86,7 @@ body, body * {
 }
 
 .status {
+    display: flex;
     font-size: 12px;
     padding: 5px;
 }
@@ -91,17 +94,14 @@ body, body * {
 .status.mod_done {
     color: green;
 }
-.status.mod_expected {
-    color: blue;
-    cursor: pointer;
-    transition: color .3s ease;
-}
-.status.mod_expected:hover {
-    color: darkgoldenrod;
-    cursor: pointer;
-}
 .status.mod_edited {
     color: red;
+}
+.status.mod_edit-admin {
+    cursor: pointer;
+}
+.status_admin {
+    margin-right: 10px;
 }
 
 .sortable {
@@ -168,19 +168,22 @@ body, body * {
     color: red;
 }
 
-.creation_form {
+.creation_form, .auth_form {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.creation_form-item {
+.creation_form-label, .auth_form-label {
+    width: 300px;
     margin-top: 50px;
+}
+.creation_form-item, .auth_form-item {
     width: 300px;
     border: 1px solid #000;
     border-radius: 5px;
     background: #fff;
 }
-.creation_form-item * {
+.creation_form-item *, .auth_form-item * {
     width: 100%;
     height: 100%;
     border: none;
@@ -192,7 +195,7 @@ body, body * {
     height: 200px;
     resize: none;
 }
-.creation_form-submit {
+.creation_form-submit, .auth_form-submit {
     width: 200px;
     margin-top: 50px;
     padding: 5px 10px;
@@ -202,11 +205,12 @@ body, body * {
     border-color: red;
 }
 .is-error {
+    width: 300px;
     color: red;
 }
 
 .creation_success-wrapper {
-    /*display: none;*/
+    display: none;
     position: absolute;
     top: 0;
     left: 0;

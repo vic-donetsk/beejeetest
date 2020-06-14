@@ -1,6 +1,6 @@
 <?php include __DIR__ . '/components/head.view.php' ?>
 
-<main class="index">
+<main class="index" data-access="<?=$this->adminToken?>">
 
     <div class="index_controls">
         <a href="/add" class="index_controls-item" title="Создать новую задачу">
@@ -8,11 +8,20 @@
                 <use xlink:href="#svgAdd"></use>
             </svg>
         </a>
-        <a href="/auth" class="index_controls-item" title="Войти в систему">
-            <svg>
-                <use xlink:href="#svgLogin"></use>
-            </svg>
-        </a>
+        <?php if ($this->adminToken) { ?>
+            <div id="index_controls-logout" class="index_controls-item" title="Выйти из системы">
+                <svg>
+                    <use xlink:href="#svgLogout"></use>
+                </svg>
+            </div>
+            <div>Admin</div>
+        <?php } else { ?>
+            <a href="/auth" class="index_controls-item" title="Войти в систему">
+                <svg>
+                    <use xlink:href="#svgLogin"></use>
+                </svg>
+            </a>
+        <?php } ?>
     </div>
 
     <div class="index_content">
@@ -21,12 +30,14 @@
             <?php foreach ($taskModel->fieldsList as $field => $header) { ?>
                 <div class="index_row-item mod_<?= $field ?>"><?= $header ?>
                 <?php if ($field !== 'content') { ?>
-                    <div class="sortable mod_desc mod_<?= $field ?>" data-field="<?= $field ?>">
+                    <div class="sortable mod_desc mod_<?= $field ?>" data-field="<?= $field ?>"
+                    title="Сортировать по убыванию">
                         <svg class="sortable_item">
                             <use xlink:href="#sortUp"></use>
                         </svg>
                     </div>
-                    <div class="sortable mod_asc mod_<?= $field ?>" data-field="<?= $field ?>">
+                    <div class="sortable mod_asc mod_<?= $field ?>" data-field="<?= $field ?>"
+                         title="Сортировать по возрастанию">
                         <svg class="sortable_item">
                             <use xlink:href="#sortDown"></use>
                         </svg>
@@ -43,23 +54,13 @@
                         <div class="index_row-item mod_<?= $field ?>">
                             <?php if ($field !== 'is_done') {
                                 echo $task[$field];
-                            } else { ?>
-                                <?php if ($task['is_done']) { ?>
-                                    <button class="status mod_done" disabled>
-                                        Выполнено
-                                    </button>
-                                <?php } else { ?>
-                                    <button class="status mod_expected">
-                                        Ожидает выполнения
-                                    </button>
-                                <?php } ?>
-                                <?php if ($task['is_edited']) { ?>
-                                    <button class="status mod_edited" disabled>
-                                        Отредактировано админом
-                                    </button>
-                                <?php } ?>
-                            <?php } ?>
-
+                            } else {
+                                 if ($this->adminToken) {
+                                     include __DIR__ . '/components/status_admin.view.php';
+                                 } else {
+                                     include __DIR__ . '/components/status_all.view.php';
+                                 }
+                            } ?>
                         </div>
                     <?php } ?>
                 </div>
@@ -81,7 +82,6 @@
 
         </div>
     <?php } ?>
-
 
 </main>
 
