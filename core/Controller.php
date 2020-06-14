@@ -69,8 +69,7 @@ class Controller
 
     public function actionAuthenticate()
     {
-        // save path to return only for
-        // index page with get-parameters
+        // save path to return only for index page
         if (parseRouteFromUrl($_SERVER['HTTP_REFERER']) !== 'edit') {
             $_SESSION['previousPage'] = $_SERVER['HTTP_REFERER'];
         }
@@ -117,6 +116,10 @@ class Controller
         }
     }
 
+    public function action404() {
 
+        require __DIR__ . '/../views/404.view.php';
+
+    }
 
 }

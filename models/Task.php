@@ -37,7 +37,7 @@ class Task {
     public function setPagination(int $currentPage) {
         $totalPages = $this->db->getCountPages();
 
-        if ($totalPages === 0) {
+        if ($totalPages == 1) {
             return null;
         } else if ($totalPages > 4) {
             return $this->fullPagination($totalPages, $currentPage);
@@ -101,6 +101,5 @@ class Task {
     public function placeMarkDone($id) {
         $this->db->markDone($id);
     }
-
 
 }

@@ -2,7 +2,6 @@
 
 class User
 {
-
     private $db;
     private $admin;
 

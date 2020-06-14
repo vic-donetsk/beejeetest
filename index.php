@@ -10,10 +10,7 @@ $config = include_once __DIR__ . '/config.php';
 $db = new Database($config);
 $controller = new Controller();
 
-
-
 // routes
-
 
 if (!isset($_GET['path']) && !count($_POST)) {
     // main page
@@ -41,25 +38,22 @@ else if ($_REQUEST['path'] === 'done') {
 }
 
 else if ($_REQUEST['path'] === 'save') {
-    // validate and append new task
+    // validate and append new/update existing task
     $controller->actionSave();
 }
 
 else if ($_REQUEST['path'] === 'login') {
-    // validate and append new task
+    // login for admin
     $controller->actionLogin();
 }
 
 else if ($_REQUEST['path'] === 'logout') {
-    // validate and append new task
+    // logout for admin
     $controller->actionLogout();
 }
-
 else
+    // URL and method not found
+    $controller->action404();
 
-
-
-// URL and method not found
-var_dump('404');
 
 

@@ -107,9 +107,7 @@ class Database
         $values[] = $savingData['id'];
         $updateQuery = "UPDATE `tasks` SET " . $fields . " WHERE id=?";
 
-
         $this->connection->prepare($updateQuery)->execute($values);
-
     }
 
     public function getAdmin()
@@ -121,7 +119,6 @@ class Database
 
     public function markDone($id)
     {
-
         $updateOneTaskQuery = "UPDATE `tasks` SET `is_done`=1 WHERE `id`=?";
 
         $this->connection->prepare($updateOneTaskQuery)->execute([$id]);
@@ -129,11 +126,9 @@ class Database
 
     public function getOneTask($id)
     {
-
         $getTaskQuery = "SELECT * FROM `tasks` WHERE `id`=" . $id;
 
         return $this->connection->query($getTaskQuery)->fetch(PDO::FETCH_ASSOC);
-
     }
 
 }

@@ -5,7 +5,7 @@ body, body * {
     font-family: Roboto, sans-serif;
 }
 
-.index, .creation, .auth {
+.index, .creation, .auth, .page404 {
     position: relative;
     min-height: 100vh;
     padding: 20px 50px;
@@ -245,5 +245,31 @@ body, body * {
 .creation_success-link:hover {
     color: goldenrod;
     border: 1px solid goldenrod;
+}
+
+.page404_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.page404_number {
+    margin-top: 50px;
+    font-size: 150px;
+}
+.page404_text {
+    margin-top: 50px;
+    font-size: 50px;
+    text-align: center;
+}
+.page404_link {
+    margin-top: 50px;
+    padding: 10px 20px;
+    background: antiquewhite;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: color .3s ease;
+}
+.page404_link:hover {
+    color: goldenrod;
 }
 
